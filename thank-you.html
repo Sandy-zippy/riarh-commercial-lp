@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Thank you | Riarh Group</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#fffdf8">
+<link rel="icon" href="assets/riarh-favicon-192.png">
+<link rel="preload" href="assets/fonts/silver-editorial.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<style>
+.sec{padding:var(--s9) 0}.tint{background:var(--bg-2)}.head{margin-bottom:var(--s7)}
+.ty{padding:var(--s8) 0 var(--s8)}
+.ty .grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:var(--s7);align-items:start}
+.ty h1{max-width:18ch}
+.ty .tylead{margin-top:var(--s4);font-size:var(--fs-lg);color:var(--mute);max-width:52ch}
+.preview{display:inline-block;margin-bottom:var(--s4);padding:var(--s2) var(--s3);border-radius:8px;background:var(--accent-wash);font-size:var(--fs-sm);color:var(--ink)}
+.mine{background:var(--bg-2);color:var(--ink);border-radius:16px;padding:var(--s5)}
+.mine h2{font:500 var(--fs-lg)/1.3 var(--b);color:var(--ink);margin-bottom:var(--s3)}
+.mine dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--s2) var(--s4);font-size:var(--fs-sm)}
+.mine dt{color:var(--mute)}.mine dd{margin:0;font-weight:500}
+.mine .call{margin-top:var(--s4);padding-top:var(--s4);border-top:1px solid var(--paper-line);font-size:var(--fs-sm);color:var(--mute)}
+.mine .call a{color:var(--accent-t);font-weight:500;text-decoration:none}
+.next3{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s5);counter-reset:n}
+.next3 li{padding:var(--s5) 0 0;border-top:2px solid var(--accent)}
+.next3 li::before{counter-increment:n;content:"0" counter(n);display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--accent);color:var(--ink);font:500 var(--fs-sm)/1 var(--b);margin-bottom:var(--s4)}
+.foot-c a{min-height:44px}
+.next3 h3{margin-bottom:var(--s2)}.next3 p{font-size:var(--fs-sm);color:var(--mute)}
+.ready{margin-top:var(--s5);padding:var(--s4) var(--s5);border-radius:var(--radius);background:var(--card);border:1px solid var(--line);font-size:var(--fs-sm)}
+.ready b{font-weight:500}
+.types{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s3)}
+.type{position:relative;border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+.type img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius)}
+.type figcaption{padding:var(--s3) 0 0;font-size:var(--fs-sm);color:var(--mute)}
+.type figcaption b{display:block;font:500 var(--fs-body)/1.35 var(--b);color:var(--ink)}
+.type .yours{position:absolute;top:var(--s3);left:var(--s3);padding:var(--s1) var(--s2);border-radius:6px;background:var(--accent);color:var(--ink);font-size:var(--fs-label);letter-spacing:.06em}
+.type.is-yours{outline:2px solid var(--accent);outline-offset:3px}
+@media (max-width:1080px){.ty .grid{grid-template-columns:1fr;gap:var(--s6)}.types{grid-template-columns:1fr 1fr}}
+@media (max-width:720px){.ty{padding:var(--s6) 0 var(--s7)}.next3,.types{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="thank-you">
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="Riarh Group"><img src="assets/riarh-wordmark.png" width="482" height="72" alt="Riarh Group"></a>
+    <a class="phone" href="tel:+16046520664" aria-label="Call Riarh Group at 604-652-0664"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M21 16.9v2.6a1.7 1.7 0 0 1-1.9 1.7 17 17 0 0 1-7.4-2.6 16.7 16.7 0 0 1-5.1-5.1 17 17 0 0 1-2.6-7.4A1.7 1.7 0 0 1 5.7 4.3h2.6a1.7 1.7 0 0 1 1.7 1.5c.1.8.3 1.6.6 2.4a1.7 1.7 0 0 1-.4 1.8L9.1 11.1a13.6 13.6 0 0 0 5.1 5.1l1.1-1.1a1.7 1.7 0 0 1 1.8-.4c.8.3 1.6.5 2.4.6a1.7 1.7 0 0 1 1.5 1.7z"/></svg><span>604-652-0664</span></a>
+  </div>
+</header>
+
+<main>
+<section class="ty">
+  <div class="wrap grid">
+    <div>
+      <p class="preview" id="preview" hidden>Preview: the form isn't connected yet, so nothing was sent.</p>
+      <h1 id="tyh">Thanks. Your project is with Riarh Group.</h1>
+      <p class="tylead">We'll call you to book your free 30-minute fit-out review.</p>
+    </div>
+    <aside class="mine" id="mine" hidden>
+      <h2>Your project</h2>
+      <dl id="mine-dl"></dl>
+      <p class="call">Prefer to talk now? <a href="tel:+16046520664">604-652-0664</a></p>
+    </aside>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="head"><h2>What happens next</h2></div>
+    <ol class="next3">
+      <li><h3>We read your answers</h3><p>So the call starts with your space, not a script.</p></li>
+      <li><h3>We call you</h3><p>We book a time for your free fit-out review.</p></li>
+      <li><h3>Your fit-out review</h3><p>What your space needs, which permits are involved and what to plan before opening. No commitment.</p></li>
+    </ol>
+    <div class="ready"><b>Have these handy:</b> the address or listing, a floor plan or lease if you have one, and your target opening date.</div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head"><h2>Spaces we've built</h2></div>
+    <div class="types" id="types">
+      <figure class="type" data-type="restaurant"><img src="assets/img/pf-1.webp" width="1400" height="1045" loading="lazy" decoding="async" alt="Dining room with long wood tables at Mucho Burrito, Abbotsford"><figcaption><b>Restaurants</b>Mucho Burrito, Abbotsford + Burnaby</figcaption></figure>
+      <figure class="type" data-type="office"><img src="assets/img/pf-2.webp" width="900" height="672" loading="lazy" decoding="async" alt="Glass-walled boardroom at a Vancouver law firm"><figcaption><b>Offices</b>Law firm, Vancouver</figcaption></figure>
+      <figure class="type" data-type="warehouse"><img src="assets/img/pf-3.webp" width="900" height="672" loading="lazy" decoding="async" alt="Steel mezzanine inside a Fresh Haul Logistics warehouse unit"><figcaption><b>Warehouses</b>Fresh Haul Logistics, Surrey</figcaption></figure>
+      <figure class="type" data-type="daycare"><img src="assets/img/pf-4.webp" width="900" height="672" loading="lazy" decoding="async" alt="Play room with soft climbing steps at Sunshine Rain Daycare"><figcaption><b>Daycares</b>Sunshine Rain Daycare, Surrey</figcaption></figure>
+      <figure class="type" data-type="cowork"><img src="assets/img/pf-5.webp" width="900" height="672" loading="lazy" decoding="async" alt="Desks around a glass-roofed atrium at a Vancouver co-working space"><figcaption><b>Co-working</b>Co-working space, Vancouver</figcaption></figure>
+      <figure class="type" data-type="office2"><img src="assets/img/pf-7.webp" width="900" height="672" loading="lazy" decoding="async" alt="Wood slat reception desk at mortgage offices in White Rock"><figcaption><b>Offices</b>Mortgage offices, White Rock</figcaption></figure>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <img src="assets/riarh-wordmark.png" width="482" height="72" alt="Riarh Group" loading="lazy">
+    <span class="foot-c">Riarh Group · <a href="tel:+16046520664">604-652-0664</a> · <span class="nw">#202 15350 Croydon Dr</span>, Surrey, BC</span>
+    <a href="privacy.html">Privacy policy</a>
+  </div>
+</footer>
+
+<script>
+// Personalises from what the form left in sessionStorage. Nothing here is sent anywhere.
+(function () {
+  let d = {};
+  try { d = JSON.parse(sessionStorage.getItem("riarh_thanks") || "{}"); } catch (e) {}
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  if (d.name) document.getElementById("tyh").textContent = `Thanks, ${d.name}. Your project is with Riarh Group.`;
+  if (d.preview) document.getElementById("preview").hidden = false;
+  const rows = [["Building", d.business_type], ["Space", d.stage === "Expanding" ? "Expanding or moving" : d.stage], ["Size", d.size], ["Opening", d.timeline], ["Location", d.region]].filter(r => r[1]);
+  if (rows.length) {
+    document.getElementById("mine-dl").innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
+    document.getElementById("mine").hidden = false;
+  }
+  // Their own business type moves to the front of the grid and is marked.
+  const map = { "Restaurant / QSR": "restaurant", "Office": "office", "Warehouse / industrial": "warehouse", "Daycare": "daycare" };
+  const card = map[d.business_type] && document.querySelector(`.type[data-type="${map[d.business_type]}"]`);
+  if (card) {
+    card.classList.add("is-yours");
+    card.insertAdjacentHTML("afterbegin", '<span class="yours">LIKE YOURS</span>');
+    card.parentNode.prepend(card);
+  }
+})();
+</script>
+<script src="app.js" defer></script>
+</body>
+</html>
