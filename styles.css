@@ -1,0 +1,605 @@
+/* Riarh Group commercial landing page. One stylesheet.
+   Cream #fffdf8 page, charcoal #080808 text, terracotta #da7734, tan #b99f7c; light base with two dark bands (rent
+   clock, final call to action). Every rule below is the readable final frame: motion.js and hero3d.js only move things
+   away from it while a scene plays, then hand it back, so no-JS and reduced motion show the final state.
+   Fonts: Silver Editorial (display) + Acid Grotesk 400/500 (body), self-hosted. Every font-size, gap and padding
+   comes from the tokens below. */
+
+@font-face{font-family:"Silver Editorial";src:url(assets/fonts/silver-editorial.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Acid Grotesk";src:url(assets/fonts/acid-grotesk-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Acid Grotesk";src:url(assets/fonts/acid-grotesk-medium.woff2) format("woff2");font-weight:500;font-display:swap}
+/* Until Acid Grotesk arrives, Arial is drawn at about Acid's width (106%), so the hero lines break the same way before
+   and after the swap and the form does not jump. */
+@font-face{font-family:"Acid Fallback";src:local("Arial"),local("Liberation Sans");size-adjust:106%;ascent-override:80.6%;descent-override:19%;line-gap-override:0%}
+/* Display headings: Silver Editorial's comma, period, apostrophe, hyphen and colon nearly vanish at 1x ("Thanks, Sam"
+   read as "Thanks. Sam"), so "Riarh Display" takes those few characters from Acid Grotesk. The later face wins for the
+   characters in its unicode-range; everything else comes from Silver Editorial (same file as the preload). */
+@font-face{font-family:"Riarh Display";src:url(assets/fonts/silver-editorial.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Riarh Display";src:url(assets/fonts/acid-grotesk-normal.woff2) format("woff2");font-weight:400;font-display:swap;unicode-range:U+2C,U+2E,U+27,U+2018,U+2019,U+2D,U+3A,U+3B}
+
+:root{
+  /* colour: brand values; neutrals tinted warm toward the terracotta */
+  --bg:#fffdf8; --bg-2:#f5efe4; --card:#fffdf8; --opt:#faf6ef;
+  --ink:#080808; --ink-2:#14120f; --ink-3:#24201c;
+  --mute:#6b645c; --line:rgba(8,8,8,.12); --line-2:rgba(8,8,8,.24); --paper-line:#e2d9cb;
+  --on-dark:#fffdf8; --on-dark-mute:#a8a29a; --dline:rgba(255,253,248,.16); --dline-2:rgba(255,253,248,.3);
+  --accent:#da7734; --accent-d:#c4652a; --accent-t:#a3521f; --accent-wash:#f8e9dd; --tan:#b99f7c;
+  --err-paper:#b42318;
+  /* type scale: 7 sizes, 4 line heights. The display face is for h1, h2 and the rent total only. */
+  --fs-num:clamp(48px,6.4vw,88px); --fs-h1:clamp(32px,4vw,56px); --fs-h2:clamp(26px,2.8vw,40px);
+  --fs-title:24px; --fs-body:16px; --fs-sm:14px; --fs-label:12px;
+  --lh-tight:1.1; --lh-title:1.3; --lh-display:1.44; --lh-body:1.5;
+  /* 4px spacing scale */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px; --s9:96px;
+  --r-sm:4px; --r:8px; --r-lg:16px; --h-control:48px; --h-min:44px;
+  --max:1320px; --pad:var(--s5); --sec:var(--s9);
+  --d:"Riarh Display","Silver Editorial","Times New Roman",serif;
+  --b:"Acid Grotesk","Acid Fallback",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --xo:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:84px;color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--fs-body)/var(--lh-body) var(--b);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block;height:auto}
+figure{margin:0}
+[hidden]{display:none!important}
+a{color:var(--accent-t)}
+h1,h2,h3{margin:0;font-weight:400}
+h1,h2{font-family:var(--d);letter-spacing:-.01em}
+/* Silver Editorial's ascenders + descenders measure ~1.36em of ink (p/y/g over l/k/d): below ~1.42 they touch. */
+h1{font-size:var(--fs-h1);line-height:var(--lh-display)}
+h2{font-size:var(--fs-h2);line-height:var(--lh-display)}
+h3{font:500 var(--fs-title)/var(--lh-title) var(--b)}
+/* the proof line sits directly above every booking button */
+.proof{font:500 var(--fs-body)/var(--lh-body) var(--b)}
+p,ul,ol{margin:0}
+::selection{background:var(--accent);color:var(--ink)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Buttons: one primary style everywhere; ghost is the same shape outlined. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s3);min-height:var(--h-control);padding:0 var(--s5);border-radius:var(--r);
+  background:var(--accent);color:var(--ink);border:1.5px solid var(--accent);font:500 var(--fs-body)/1 var(--b);text-decoration:none;cursor:pointer;
+  transition:background .15s,border-color .15s,translate .15s}
+.btn:hover{background:var(--accent-d);border-color:var(--accent-d)}
+.btn:active{translate:0 1px}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn.ghost:hover{border-color:var(--accent-t);color:var(--accent-t)}
+.btn svg{width:18px;height:18px}
+:focus-visible{outline:3px solid var(--accent-t);outline-offset:2px}
+.step legend:focus{outline:none}   /* focus is moved here by script for screen readers on each new step; it is not a control, so no ring */
+
+/* ---------- Header ---------- */
+.top{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:var(--s3);height:68px}
+.top .logo{display:inline-flex;align-items:center;min-height:var(--h-min);margin-right:auto}
+.top .logo img{width:200px;height:auto}
+.top .phone{display:inline-flex;align-items:center;gap:var(--s2);font:500 var(--fs-body)/1 var(--b);color:var(--ink);text-decoration:none;
+  border:1px solid var(--line-2);border-radius:var(--r);padding:var(--s3) var(--s4);min-height:var(--h-min)}
+.top .phone svg{width:16px;height:16px;color:var(--accent-t)}
+.top .phone:hover{border-color:var(--accent-t)}
+/* desktop: the booking button joins the header once the hero form has scrolled away (app.js) */
+.top-cta{min-height:var(--h-min)}
+.top .phone{order:1}   /* the phone keeps the right edge, so it does not jump when the booking button comes and goes */
+.hold .hero h1,.hold .callout{visibility:hidden}   /* ?v= / ?a=: until app.js has set the headline (head script, 1.5 s at most) */
+
+/* ---------- Hero: proof, who it is for, the promise and the offer on the centre line; under them the form and the
+   3D build as an even pair, the booking button and its proof under the build ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hgrid{display:grid}
+.htext{padding:var(--s5) 0}
+.chip,.callout,.hero h1,.offer{text-align:center}
+.htext{text-align:center}
+/* one proof line above the callout */
+.chip{display:inline-block;margin-bottom:var(--s2);padding:var(--s1) var(--s3);border:1px solid var(--tan);border-radius:var(--r-sm);font:500 var(--fs-sm)/var(--lh-body) var(--b)}
+/* who the page is for: headline class, the qualifier that selects the reader highlighted */
+.callout{font:500 var(--fs-title)/var(--lh-title) var(--b);color:var(--ink);margin-bottom:var(--s2);text-wrap:balance}
+.callout b{font-weight:500;color:var(--accent-t)}
+.offer{margin-top:var(--s2)}
+.hstage{position:relative}
+.hphoto{position:relative;z-index:0;min-width:0;background:var(--ink-3)}   /* min-width:0: iPhone Safari sized the box from its 240px min-height x 16/9 and pushed it 37px off the screen */
+/* what the visitor leaves the call with: at the foot of the form card, gone on the contact step */
+.leave{margin-top:var(--s4);font-size:var(--fs-sm);color:var(--mute)}
+.formcard:has(.step:last-of-type:not([hidden])) .leave{display:none}
+/* the booking button under the build, its proof under the button; on the contact step the form's own submit is the
+   only booking button in the hero */
+.h-ask{display:grid;justify-items:center;gap:var(--s2);margin-top:var(--s3);text-align:center}
+.hero:has(.step:last-of-type:not([hidden])) .h-ask{visibility:hidden}
+/* Desktop: the head runs the full width; the form card and the build card are two equal columns either side of the
+   centre line. The stage wrapper steps aside so both cards sit in the same grid row. */
+@media (min-width:1081px){
+  .hgrid{grid-template-columns:repeat(2,minmax(0,500px));justify-content:center;column-gap:var(--s7);padding-block:0 var(--s6)}
+  .htext{grid-column:1/-1;padding:var(--s4) 0 var(--s5)}
+  .hstage{display:contents}
+  .formcard{display:flex;flex-direction:column}
+  .leave{margin-top:auto;padding-top:var(--s4)}
+  .hphoto{aspect-ratio:4/3;border-radius:var(--r-lg)}
+  .hphoto img{position:absolute;inset:0}
+}
+.hphoto img{width:100%;height:100%;object-fit:contain}   /* the poster is the whole finished unit: never crop it */
+.hphoto figcaption{position:absolute;bottom:var(--s4);left:var(--s4);padding:var(--s1) var(--s3);border-radius:var(--r-sm);background:var(--ink);color:var(--on-dark);font:500 var(--fs-sm)/var(--lh-body) var(--b)}
+.hphoto figcaption::before{content:"";display:inline-block;width:8px;height:8px;margin-right:var(--s2);border-radius:50%;background:var(--accent)}
+/* The 3D build (hero3d.js) draws under the photo; the photo stays the LCP element and the resting frame. While the
+   build plays the panel shows a blueprint grid and five step labels, the current one lit. */
+.hphoto canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab}
+.hphoto img{position:relative;z-index:2}
+/* while the 3D build runs, the category label lies on the sign's face: hero3d.js sets the matrix every frame */
+.hphoto.is-3d figcaption{top:0;left:0;bottom:auto;width:180px;height:27px;max-width:none;padding:0;display:grid;place-items:center;transform-origin:0 0;border-radius:0;background:none;color:var(--ink);font:500 var(--fs-body)/1 var(--b);white-space:nowrap;pointer-events:none}
+.hphoto.is-3d figcaption::before{content:none}
+@media (min-width:721px){.hphoto{overflow:hidden}}
+.hphoto figcaption{z-index:3}
+.hphoto{background:linear-gradient(rgba(8,8,8,.045) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(90deg,rgba(8,8,8,.045) 1px,transparent 1px) 0 0/28px 28px,var(--bg-2)}
+/* the build strip sits under the photo card and shows only while the build plays (its room is always kept) */
+.h-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--s2);margin:var(--s3) 0 0;padding:0;list-style:none}
+.h-steps:not(.is-live){visibility:hidden}
+.h-steps li{display:grid;gap:var(--s1);font:500 var(--fs-label)/var(--lh-title) var(--b);color:var(--mute);min-width:0}
+.h-steps li::before{content:"";display:block;height:4px;border-radius:var(--r-sm);background:var(--paper-line)}
+.h-steps.h-narrow{gap:var(--s1)}
+.h-steps li.on,.h-steps li.done{color:var(--ink)}
+.h-steps li.on::before{background:var(--accent)}
+.h-steps li.done::before{background:var(--ink)}
+.h-pause{position:absolute;z-index:3;bottom:var(--s4);right:var(--s4);display:grid;place-items:center;width:var(--h-min);height:var(--h-min);padding:0;border:0;border-radius:var(--r);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:0 6px 18px rgba(8,8,8,.18)}
+.h-pause svg{width:16px;height:16px;fill:currentColor;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.h-pause:hover{color:var(--accent-t)}
+
+/* ---------- Form (cream card on the photo) ---------- */
+.formcard{position:relative;background:var(--card);color:var(--ink);border-radius:var(--r-lg);padding:var(--s6);box-shadow:0 24px 60px rgba(8,8,8,.32)}
+.f-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:0 var(--s3)}
+.f-count{margin-left:auto;font-size:var(--fs-sm);color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+/* the proof line is in the chip above the headline; in the card it shows on the contact step, directly above the submit */
+.formcard:not(:has(.step:last-of-type:not([hidden]))) .f-top .proof{display:none}
+.f-bar{height:4px;background:var(--paper-line);border-radius:var(--r-sm);margin:var(--s2) 0 var(--s4);overflow:hidden}
+.f-bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:var(--r-sm);transition:width .35s ease}
+/* the form keeps the height of step 1 (four rows of answers), so the card does not shrink on steps 2 and 3 */
+#lead{min-height:256px}
+.step{border:0;margin:0;padding:0;min-width:0}
+.step legend{font:500 var(--fs-title)/var(--lh-title) var(--b);color:var(--ink);padding:0;margin-bottom:var(--s3)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
+.opt{position:relative;display:flex;align-items:center;min-height:var(--h-control);padding:var(--s1) var(--s3);border:1.5px solid var(--paper-line);
+  border-radius:var(--r);cursor:pointer;line-height:var(--lh-title);color:var(--ink);background:var(--opt);transition:border-color .15s,background .15s,scale .15s}
+.opt:hover{border-color:var(--tan)}
+.opt:active{scale:.985}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-wash)}
+.opt:has(input:focus-visible){outline:3px solid var(--accent-t);outline-offset:2px}
+.f-nav{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);margin-top:var(--s4)}
+.f-back{background:none;border:0;color:var(--mute);font:400 var(--fs-sm) var(--b);cursor:pointer;padding:var(--s3) var(--s1);min-height:var(--h-control)}
+.f-back:hover{color:var(--ink)}
+.f-nav .btn{flex:1;padding:0 var(--s3);white-space:nowrap}
+.f-nav:has(.f-back[hidden]):has(.btn[hidden]){display:none}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3)}
+.fields .full{grid-column:1/-1}
+.field label{display:block;font-size:var(--fs-sm);color:var(--ink);margin-bottom:var(--s1)}
+.callnote{margin:0 0 var(--s4);font-size:var(--fs-sm);color:var(--mute)}
+.role .opts{grid-template-columns:1fr}   /* who the space is for: one long answer, so one column */
+.notes summary{cursor:pointer;font-size:var(--fs-sm);color:var(--accent-t);min-height:var(--h-min);display:flex;align-items:center;list-style:none}
+.notes summary::-webkit-details-marker{display:none}
+.notes summary span{color:var(--mute);margin-left:var(--s1)}
+.notes input,.notes textarea{margin-top:var(--s2)}
+.field input,.field textarea{width:100%;min-height:var(--h-control);padding:var(--s3) var(--s4);border:1.5px solid var(--paper-line);border-radius:var(--r);
+  font:400 var(--fs-body)/var(--lh-body) var(--b);color:var(--ink);background:var(--opt)}
+/* browser autofill keeps the page's field colours */
+.field input:autofill{-webkit-text-fill-color:var(--ink);box-shadow:0 0 0 100px var(--opt) inset}
+.field textarea{min-height:72px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:var(--mute)}
+.field input:focus,.field textarea:focus{border-color:var(--accent-t);outline:none;box-shadow:0 0 0 3px rgba(218,119,52,.22)}
+.field .err{display:none;font-size:var(--fs-sm);color:var(--err-paper);margin-top:var(--s1)}
+.field.bad input{border-color:var(--err-paper)}
+.field.bad .err{display:block}
+.step-err{display:none;font-size:var(--fs-sm);color:var(--err-paper);margin-top:var(--s3)}
+.step.bad .step-err{display:block}
+/* the privacy link sits beside the submit button: on the contact step only */
+.f-foot{display:none;margin-top:var(--s2);font-size:var(--fs-sm)}
+.formcard:has(.step:last-of-type:not([hidden])) .f-foot{display:block}
+.f-foot a{color:var(--mute);display:inline-flex;align-items:center;min-height:var(--h-min)}
+.f-msg{margin-top:var(--s3);font-size:var(--fs-sm);color:var(--err-paper)}
+.f-msg:empty{display:none}
+/* desktop: the form sits in the words column as a flat card */
+@media (min-width:1081px){
+  .formcard{padding:var(--s5);box-shadow:none;border:1px solid var(--paper-line)}
+}
+@media (prefers-reduced-motion:no-preference){.step.in{animation:stepIn .28s var(--xo)}}
+@keyframes stepIn{from{translate:0 6px}to{translate:0 0}}
+
+/* ---------- Scene 02, the offer: the fit-out review sheet, with an example for the visitor's category ---------- */
+.rv{background:var(--bg-2);padding:var(--sec) 0}
+.rv-g{position:relative;display:grid;justify-items:center;gap:var(--s6)}
+.o-in{text-align:center}
+/* the four-step process as one numbered line (credentials block) */
+.proc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(100%,640px);margin:0;padding:0;list-style:none;counter-reset:p}
+.proc li{position:relative;display:grid;justify-items:center;gap:var(--s2);font-weight:500;counter-increment:p}
+.proc li span{max-width:14ch;color:var(--mute);font:400 var(--fs-sm)/var(--lh-body,1.4) var(--b);text-align:center}
+.proc li::before{content:counter(p);position:relative;z-index:1;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--on-dark);font:500 var(--fs-sm)/1 var(--b)}
+.proc li:not(:last-child)::after{content:"";position:absolute;left:calc(50% + 16px);width:calc(100% - 32px);top:16px;height:1px;background:var(--line-2)}
+.ex{display:inline-block;padding:var(--s1) var(--s2);border-radius:var(--r-sm);background:var(--accent-wash);color:var(--accent-t);font:500 var(--fs-label)/1 var(--b);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.sheet{position:relative;width:min(100%,880px);background:var(--card);border:1px solid var(--line-2);border-radius:var(--r-lg);box-shadow:0 34px 70px -34px rgba(8,8,8,.3);overflow:clip}
+.sh-top{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s3);padding:var(--s3) var(--s5);background:var(--bg-2);border-bottom:1px solid var(--paper-line)}
+.sh-lw{margin-right:auto;font-weight:500}
+.sh-ico{position:relative;flex:none;width:18px;height:18px}
+.sh-ico svg{position:absolute;inset:0;width:18px;height:18px;fill:none;stroke:var(--ink);stroke-width:1.8}
+.sh-ico .sh-doc{stroke-linejoin:round}
+.sh-ico .sh-spin{stroke:var(--accent);stroke-dasharray:28;stroke-dashoffset:8}
+.sh-body{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s5);padding:var(--s4) var(--s5) var(--s2)}
+.sh-sec{display:grid;gap:var(--s3);align-content:start;padding:var(--s4) 0}
+.sh-sec h3{position:relative;min-height:calc(2.6em + var(--s4));padding-top:var(--s4)}
+.sh-sec h3::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--ink);transform-origin:0 50%;transform:scaleX(var(--rule,1))}
+.sh-sec ul{list-style:none;padding:0;display:grid;gap:var(--s2)}
+.sh-sec li{position:relative;display:flex;gap:var(--s2);align-items:flex-start;line-height:var(--lh-title)}
+.sh-sec li svg{flex:none;width:16px;height:16px;margin-top:var(--s1);color:var(--accent-t)}
+.sh-sk{position:absolute;left:24px;top:4px;width:min(80%,190px);height:12px;border-radius:var(--r-sm);background:var(--bg-2);transform-origin:0 50%}
+.sh-foot{display:flex;flex-direction:column;gap:var(--s3);align-items:center;text-align:center;padding:var(--s4) var(--s5);border-top:1px solid var(--paper-line);background:var(--bg-2)}
+.team{grid-column:1/-1}
+
+/* ---------- Scene 03, the rent clock (dark band): the visitor's own rent, a shut door and a 52-week board ---------- */
+.cost{background:var(--ink);color:var(--on-dark);padding:var(--sec) 0}
+.cost-g{display:grid;justify-items:center;gap:var(--s6);text-align:center}
+.cost-t{position:relative;z-index:1;display:grid;justify-items:center}
+.cost h2{color:var(--on-dark)}
+.calc{display:grid;grid-template-columns:repeat(2,minmax(0,240px));justify-content:center;align-items:start;gap:var(--s4) var(--s6);margin-top:var(--s5)}
+.calc-how{grid-column:1/-1}
+.cf label{display:block;font-size:var(--fs-label);letter-spacing:.12em;text-transform:uppercase;color:var(--on-dark-mute);margin-bottom:var(--s2)}
+/* the Example values are real values in the controls, each labelled Example until the visitor changes it */
+.cf-row{display:flex;align-items:center;justify-content:center;gap:var(--s3)}
+.cf-out{font:500 var(--fs-title)/var(--lh-title) var(--b);color:var(--on-dark)}
+.cf-box{display:flex;flex:none;align-items:center;width:200px;max-width:100%;border:1.5px solid var(--dline-2);border-radius:var(--r);background:var(--ink-2);transition:border-color .15s}
+.cf-box:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(218,119,52,.3)}
+.cf-box input{flex:1;width:0;min-width:0;min-height:var(--h-control);padding:var(--s2) var(--s4);border:0;background:transparent;color:var(--on-dark);font:500 var(--fs-title)/1 var(--b);outline:none}
+.cf-range{display:block;width:100%;height:var(--h-min);margin:0;background:transparent;cursor:ew-resize;-webkit-appearance:none;appearance:none}
+/* a drawn track (filled up to the thumb by --v, set from app.js) so it reads on the dark band */
+.cf-range::-webkit-slider-runnable-track{height:8px;border-radius:var(--r-sm);background:linear-gradient(90deg,var(--accent) var(--v,21.6%),var(--dline-2) 0)}
+.cf-range::-moz-range-track{height:8px;border-radius:var(--r-sm);background:linear-gradient(90deg,var(--accent) var(--v,21.6%),var(--dline-2) 0)}
+.cf-range::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-8px;border-radius:50%;border:3px solid var(--on-dark);background:var(--accent)}
+.cf-range::-moz-range-thumb{width:18px;height:18px;border-radius:50%;border:3px solid var(--on-dark);background:var(--accent)}
+.cf-range:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:var(--r-sm)}
+.calc-how{font-size:var(--fs-sm);color:var(--on-dark-mute)}
+.r-vis{display:grid;gap:var(--s4);min-width:0;width:min(100%,760px)}
+.r-top{display:grid;grid-template-columns:auto auto;justify-content:center;gap:var(--s6);align-items:center}
+.r-shopw{position:relative;width:clamp(124px,17vw,250px)}
+.r-glow{position:absolute;inset:-30% -10% -10% -45%;background:radial-gradient(45% 45% at 62% 62%,rgba(218,119,52,.55),transparent 70%);pointer-events:none}
+.r-shop{position:relative;display:block;width:100%;height:auto;overflow:visible}
+.r-st{fill:none;stroke:var(--on-dark);stroke-width:2;stroke-linejoin:round}
+.r-gl{fill:var(--ink-2)}
+.r-lit{fill:#f0a062}
+.r-sign{fill:var(--accent)}
+/* resting frame: the door has swung open on its hinge (left edge) and the unit is lit */
+.r-door{fill:var(--ink-3);stroke:var(--on-dark);stroke-width:2;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:0 50%;transform:scaleX(.14) skewY(-14deg)}
+.calc-out{min-width:0;text-align:left;transform-origin:0 70%}
+.co-t{font-size:var(--fs-title);line-height:var(--lh-title);color:var(--on-dark)}
+.co-t b{display:block;margin-bottom:var(--s2);font:400 var(--fs-num)/var(--lh-tight) var(--d);color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+/* the weekly figure stays for screen readers (.sr); on screen the total stands alone */
+.co-n.is-empty + .co-l{display:none}
+.cost .ex{background:var(--ink-3);color:#f2a46e}
+.calc-msg{margin-top:var(--s3);font-size:var(--fs-sm);color:#f2b48a}
+.calc-msg:empty{display:none}
+.r-grid{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:var(--s1)}
+.r-grid i{position:relative;display:block;aspect-ratio:1;border-radius:var(--r-sm);background:#262422;box-shadow:inset 0 0 0 1px #34312d;overflow:hidden}
+/* --rv (rent block) and --sv (sales) are 0 or 1 at rest from the classes; motion.js drives them per frame */
+.r-grid i.r-f{--rv:1}
+.r-grid i.r-s{--sv:1}
+.r-grid i::after{content:"";position:absolute;inset:0;background:var(--accent);transform:scaleY(var(--rv,0));transform-origin:50% 100%}
+.r-grid i::before{content:"";position:absolute;inset:0;background:rgba(255,253,248,.82);opacity:var(--sv,0)}
+/* the first week of sales, where the doors open: a terracotta ring around a cream cell */
+.r-grid i.r-o{outline:2px solid var(--accent);outline-offset:-2px}
+.r-grid i.r-o::before{inset:4px}
+.r-leg{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s2) var(--s5);font-size:var(--fs-sm);color:var(--on-dark-mute)}
+.r-leg span{display:inline-flex;gap:var(--s2);align-items:center}
+.r-leg i{width:12px;height:12px;border-radius:var(--r-sm);background:var(--accent)}
+.r-leg i.r-s{background:rgba(255,253,248,.82)}
+
+/* ---------- Scene 04, projects: one real build centred at a time ----------
+   Base (no JS, phones, reduced motion): a native swipe row with centre snap and a peek of the next card.
+   Desktop with motion: motion.js adds .is-scrub on the way in (pinned, scrubbed by scroll). */
+.work{padding:var(--sec) 0;overflow:clip}
+/* pinned scrub (desktop with motion): the block holds under the header for 1.6 screens of scroll */
+.work.is-scrub{height:calc(260svh - 69px);padding:0}
+.work.is-scrub > .wrap{position:sticky;top:69px;height:calc(100svh - 69px);display:flex;flex-direction:column;justify-content:center}
+.is-swipe .pj-rail{display:block}
+@media (hover:hover) and (pointer:fine){.is-swipe .pj-view{scrollbar-width:thin}}   /* a mouse needs something to drag */
+.work-h{margin-bottom:var(--s5);text-align:center}
+.pj-view{margin-inline:calc(-1 * var(--pad));overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.pj-track{display:flex;gap:var(--s4);padding-inline:var(--pad)}
+.pj-card{flex:0 0 var(--cw,min(68%,880px));display:grid;gap:var(--s3);align-content:start;scroll-snap-align:center;transform-origin:50% 40%}
+.pj-ph{position:relative;aspect-ratio:16/10;border-radius:var(--r-lg);overflow:hidden;background:var(--bg-2)}
+.pj-ph img{width:100%;height:100%;object-fit:cover}
+.pj-ph::after{content:"";position:absolute;inset:0;background:var(--bg);opacity:var(--dim,0);pointer-events:none}
+.pj-card figcaption{display:flex;flex-wrap:wrap;gap:var(--s1) var(--s3);align-items:center}
+.pj-name{font:500 var(--fs-title)/var(--lh-title) var(--b)}
+.pj-city{color:var(--mute)}
+.pj-scope{padding:var(--s2) var(--s3);border:1px solid var(--paper-line);border-radius:var(--r);background:var(--card);font:500 var(--fs-sm)/1 var(--b);transition:background-color .3s,border-color .3s}
+.pj-card.on .pj-scope{background:var(--accent);border-color:var(--accent)}
+.pj-rail{display:none;position:relative;height:2px;margin-top:var(--s5);background:var(--paper-line)}
+.pj-rail i{position:absolute;inset:0;background:var(--ink);transform-origin:0 50%;transform:scaleX(var(--p,0))}
+/* the pinned strip runs the full screen width and fades out over its last 72px at each edge (no hard crop) */
+.is-scrub .pj-view{overflow:hidden;scroll-snap-type:none;margin-inline:calc(50% - 50vw);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 72px,#000 calc(100% - 72px),transparent);mask-image:linear-gradient(90deg,transparent,#000 72px,#000 calc(100% - 72px),transparent)}
+.anim .is-scrub .pj-track{will-change:transform}
+.is-scrub .pj-rail{display:block}
+
+/* ---------- Scene 05, credentials: three numbers count, the map leans back like a site plan and four pins land,
+   the four offices and the four-step process under it ---------- */
+.loc{padding:var(--sec) 0;overflow-x:clip}
+.loc-g{display:grid;justify-items:center;gap:var(--s6)}
+.of-head{text-align:center}
+.nums{display:grid;grid-template-columns:repeat(3,auto);gap:var(--s4) var(--s8);margin:0;padding:0;list-style:none;text-align:center;color:var(--mute)}
+.nums b{display:block;min-width:4ch;font:500 var(--fs-h2)/var(--lh-tight) var(--b);color:var(--ink)}
+.offices{position:relative;z-index:1;list-style:none;width:100%;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 var(--s5);border-bottom:1px solid var(--line)}   /* above the tilted map plane, so every link takes its tap */
+/* each office: name, street address, phone, directions */
+.office{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 var(--s4);align-items:start;padding:var(--s3) 0;border-top:1px solid var(--line)}
+.office b{grid-column:1/-1;font:500 var(--fs-title)/var(--lh-title) var(--b);transition:color .2s}
+.office address{grid-row:2/4;font-style:normal;font-size:var(--fs-sm);color:var(--mute)}
+.office a{display:inline-flex;align-items:flex-start;justify-self:end;min-height:var(--h-min);font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;text-decoration:none}
+.office .dir{font-size:var(--fs-sm);color:var(--accent-t);text-decoration:underline;text-underline-offset:3px}
+.office.hl b{color:var(--accent-t)}
+@media (min-width:1081px){.office{grid-template-columns:minmax(0,1fr)}.office a{justify-self:start}.office address{grid-row:auto}}   /* four narrow columns: phone under the address, not beside it */
+/* where Riarh works, by region */
+.areas{display:grid;justify-items:center;gap:var(--s3);margin:0}
+.areas div{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:var(--s2)}   /* one row per province */
+.areas dt{font:500 var(--fs-label)/1 var(--b);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.areas dd{margin:0;padding:var(--s1) var(--s3);border:1px solid var(--line);border-radius:var(--r-sm);font-size:var(--fs-sm)}
+.of-map{min-width:0;width:min(100%,760px);padding:2% 8% 4%}
+/* The map tilts with no perspective and the pins stand up with a flat counter-stretch (turn back 7deg, stretch by 1/cos tilt): exact, and the same in every browser. Nested preserve-3d laid the pins down on the map on the iPhone engine. */
+.of-plane{position:relative;aspect-ratio:600/416;transform:rotateX(var(--tilt,54deg)) rotateZ(-7deg);transform-origin:50% 55%}
+.of-plane svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.of-grid{fill:none;stroke:rgba(8,8,8,.07);stroke-width:1}
+.of-ab{fill:rgba(218,119,52,.2);stroke:var(--accent);stroke-width:1.8}
+.of-bc{fill:rgba(218,119,52,.2);stroke:var(--accent);stroke-width:1.8}
+.of-bcg{display:none;fill:var(--accent)}
+.pin{position:absolute;width:0;height:0}
+.pin-shadow{position:absolute;left:-12px;top:-6px;width:24px;height:12px;border-radius:50%;background:radial-gradient(closest-side,rgba(8,8,8,.45),rgba(8,8,8,0));transform:scale(var(--fs,1))}
+.pin-stand{position:absolute;left:0;bottom:0;width:0;transform-origin:0 100%;transition:transform .3s var(--xo);
+  transform:rotateZ(7deg) scaleY(calc(1 / cos(var(--tilt,54deg)))) translateY(calc(-1 * var(--dy,0px) - var(--lift,0px))) scale(var(--pv,1))}
+.is-play .pin-stand{transition:none}
+.pin.up{--lift:14px}
+.pin-stem{position:absolute;left:-2px;bottom:0;width:4px;height:var(--h,40px);border-radius:var(--r-sm);background:var(--ink)}
+.pin-top{position:absolute;left:0;bottom:var(--h,40px)}
+.pin-head{position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 3px var(--bg)}
+.pin-ring{position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;border:2px solid var(--accent)}
+.pin-lab{position:absolute;top:-14px;right:16px;padding:var(--s2);border-radius:var(--r-sm);background:var(--ink);color:var(--on-dark);font:500 var(--fs-label)/1 var(--b);white-space:nowrap}
+.pin-main .pin-stem{background:var(--accent)}
+.pin-main .pin-head{left:-9px;top:-9px;width:18px;height:18px;background:var(--accent)}
+.pin-main .pin-lab{background:var(--accent);color:var(--ink)}
+
+/* ---------- FAQ ---------- */
+.faq{padding:0 0 var(--sec)}
+.faq-g{display:grid;justify-items:center;gap:var(--s6);padding-top:var(--s8)}
+.faq h2{text-align:center}
+.faq-g > div{width:min(100%,760px)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-child{border-top:1px solid var(--line)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:var(--s4);min-height:var(--s8);padding:var(--s4) 0;cursor:pointer;
+  font:500 var(--fs-title)/var(--lh-title) var(--b);color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+/* a plus that turns 45 degrees when the answer opens */
+.faq summary::after{content:"+";flex:none;font:400 var(--fs-title)/1 var(--b);color:var(--ink);transition:rotate .2s var(--xo)}
+.faq details[open] summary::after{rotate:45deg}
+.faq details p{padding:0 0 var(--s5);color:var(--mute);max-width:62ch}
+
+/* ---------- Scene 06, final call (dark band): a band of light crosses the dusk storefront ----------
+   Base (no JS): the plain photo with the sign glow. With JS, .is-lights layers a dimmed copy under a masked lit copy;
+   the mask resting at 8% is the scene's last frame, which is also the reduced-motion state. */
+.final{background:var(--ink);color:var(--on-dark)}
+.final-g{display:grid}
+.c-panel{display:grid;justify-items:center;gap:var(--s6);padding:var(--sec) var(--pad) var(--s8);text-align:center}
+.final h2{color:var(--on-dark)}
+/* what happens after the form, as four numbered steps directly above the booking button */
+.nx{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(100%,880px);margin:0;padding:0;list-style:none;counter-reset:n}
+.nx li{--i:0;position:relative;display:grid;justify-items:center;align-content:start;gap:var(--s2);padding:0 var(--s2);font-weight:500;counter-increment:n}
+.nx li:nth-child(2){--i:1}
+.nx li:nth-child(3){--i:2}
+.nx li:nth-child(4){--i:3}
+.nx li::before{content:counter(n);position:relative;z-index:1;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--ink);font:500 var(--fs-sm)/1 var(--b)}
+.nx li:not(:last-child)::after{content:"";position:absolute;left:calc(50% + 16px);width:calc(100% - 32px);top:15px;height:2px;background:var(--accent);transform-origin:0 50%}
+.final .acts{display:grid;justify-items:center;gap:var(--s3)}
+.final .acts a.tel{color:var(--on-dark);font-weight:500;display:inline-flex;align-items:center;min-height:var(--h-min);text-decoration:none}
+.pic{position:relative;overflow:hidden;width:100%;aspect-ratio:21/9;max-height:min(520px,56svh)}
+.pic-lay{position:absolute;inset:0;transform-origin:60% 60%;transform:scale(1.07)}
+.pic-lay img,.pic-dim{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 72%}
+.pic-dim{background:url(assets/img/final.webp) 50% 72%/cover no-repeat;filter:brightness(.3) saturate(.5)}
+.is-lights .pic-lit{filter:contrast(1.22) saturate(1.25) brightness(1.06);
+  -webkit-mask-image:linear-gradient(90deg,#000 42%,transparent 58%),linear-gradient(180deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 22%,#000 46%);mask-image:linear-gradient(90deg,#000 42%,transparent 58%),linear-gradient(180deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 22%,#000 46%);
+  -webkit-mask-size:300% 100%,100% 100%;mask-size:300% 100%,100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:calc(var(--m,8) * 1%) 0,0 0;mask-position:calc(var(--m,8) * 1%) 0,0 0;-webkit-mask-composite:source-in;mask-composite:intersect}
+.pic-band{position:absolute;top:18%;bottom:0;left:calc(var(--bx,-30) * 1%);width:22%;background:linear-gradient(90deg,transparent,rgba(255,190,110,.42),transparent);mix-blend-mode:screen;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 22%);mask-image:linear-gradient(180deg,transparent 0,#000 22%)}
+.pic-glow{position:absolute;inset:0;background:radial-gradient(40% 24% at 50% 72%,rgba(255,176,96,.36),transparent 70%);mix-blend-mode:screen;pointer-events:none}
+
+/* ---------- Drawn blocks: what the fit-out review fixes, the timeline, who it is not for, the P.S. ----------
+   Each rule is the finished frame. With motion on, motion.js gives a block .pre while it is still below the screen
+   (first frame held) and .in on arrival (the keyframes at the end of this file play once). */
+.why,.nf,.ps{padding:var(--sec) 0}
+.chg{padding:var(--sec) 0;background:var(--bg-2)}
+.ps{border-top:1px solid var(--line)}
+.why-g,.chg-g,.nf-g,.ps-g{display:grid;justify-items:center;gap:var(--s6);text-align:center}
+/* three usual mistakes, each crossed, joined by a line to what the fit-out review does instead */
+.fx{display:grid;gap:var(--s3);width:min(100%,880px);margin:0;padding:0;list-style:none}
+.fx li{--i:0;display:grid;grid-template-columns:minmax(0,1fr) var(--s8) minmax(0,1fr);align-items:center;gap:var(--s3)}
+.fx li:nth-child(2){--i:1}
+.fx li:nth-child(3){--i:2}
+.fx-no,.fx-yes{display:flex;align-items:center;gap:var(--s3);min-height:var(--s8);padding:var(--s3) var(--s4);border-radius:var(--r);font:500 var(--fs-title)/var(--lh-title) var(--b);text-align:left}
+.fx-no{background:var(--bg-2);color:var(--mute)}
+.fx-yes{background:var(--accent-wash)}
+.fx svg{flex:none;width:20px;height:20px}
+.fx-no svg{color:var(--err-paper)}
+.fx-yes svg{color:var(--accent-t)}
+.fx-ln{position:relative;display:block;height:2px;background:var(--ink);transform-origin:0 50%}
+.fx-ln::after{content:"";position:absolute;right:-6px;top:-4px;border:5px solid transparent;border-left-color:var(--ink)}
+/* one line from the fit-out review to opening day: what the space needs is found at the first stop, not during the build */
+.tl{position:relative;width:min(100%,880px);padding-top:var(--s7)}
+.tl-bar{position:absolute;left:12.5%;right:12.5%;top:calc(var(--s7) + 7px);height:2px;background:var(--ink);transform-origin:0 50%}
+.tl-n{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;padding:0;list-style:none;font-weight:500}
+.tl-n li{position:relative;display:grid;justify-items:center;align-content:start;gap:var(--s2);padding:0 var(--s1)}
+.tl-n li::before{content:"";position:relative;z-index:1;width:16px;height:16px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 4px var(--bg-2)}
+.tl-n b{font:500 var(--fs-label)/var(--lh-title) var(--b);letter-spacing:.08em;text-transform:uppercase;color:var(--accent-t)}
+.tl-n li:nth-child(3) b{color:var(--mute)}
+.tl-dots{position:absolute;left:0;top:0;display:flex;justify-content:center;gap:var(--s1);width:25%}
+.tl-dots i{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--ink)}
+.tl-dots svg{width:12px;height:12px}
+.tl-gone{left:50%}
+.tl-gone i{background:none;border:1.5px dashed var(--line-2)}
+/* who the call is not for: two lines struck through, one ticked */
+.nf-l{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s3) var(--s6);margin:0;padding:0;list-style:none;font:500 var(--fs-title)/var(--lh-title) var(--b)}
+.nf-x{color:var(--mute)}
+.nf-x span{background:linear-gradient(var(--ink),var(--ink)) 0 55%/100% 2px no-repeat}
+.nf-ok{display:inline-flex;align-items:center;gap:var(--s2)}
+.nf-ok svg{flex:none;width:20px;height:20px;color:var(--accent-t)}
+/* P.S.: the call in one breath, the next step, what waiting costs, one button */
+.ps-g{gap:var(--s4)}
+.ps-t{max-width:34em;font-size:var(--fs-title);line-height:var(--lh-title)}
+.ps-t b{font-weight:500;color:var(--accent-t)}
+.ps-u{padding-bottom:var(--s1);background:linear-gradient(var(--accent),var(--accent)) 0 100%/100% 3px no-repeat}
+
+/* ---------- Footer ---------- */
+.foot{padding:var(--s6) 0;font-size:var(--fs-sm);color:var(--mute);border-top:1px solid var(--line)}
+.foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:var(--s5);flex-wrap:wrap}
+.foot img{width:150px}
+/* words that must never split across lines: "fit-out" in headlines */
+.nw{white-space:nowrap}
+h1,h2{text-wrap:balance}
+.foot a{color:var(--mute);display:inline-flex;align-items:center;min-height:var(--h-min)}
+.foot img{margin-right:auto}
+
+/* ---------- Phone call bar (pinned for the whole page on phones) ---------- */
+.stick{display:none}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1080px){
+  :root{--sec:var(--s8)}
+  .hgrid{grid-template-columns:1fr}
+  .htext{padding:var(--s6) 0 var(--s5)}
+  /* form and photo side by side under the words: the photo is as tall as the form, so neither leaves a hole */
+  .hstage{display:grid;grid-template-columns:minmax(0,460px) minmax(0,1fr);gap:var(--s4);padding:0 0 var(--s6)}
+  .formcard{background:var(--bg-2);border:1px solid var(--paper-line);box-shadow:0 12px 32px rgba(8,8,8,.08)}
+  .hcard{display:flex;flex-direction:column}
+  .hphoto{flex:1;min-height:240px;position:relative;right:auto;border-radius:var(--r-lg);overflow:hidden}
+  .hphoto img{position:absolute;inset:0}
+  .hphoto figcaption{left:var(--s4);max-width:calc(100% - 2 * var(--s4))}
+  .offices{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* short laptops (1280x720): a tighter head and a wider build so the whole form stays in the first screen */
+@media (min-width:1081px) and (max-height:800px){
+  .htext{padding:var(--s2) 0 var(--s3)}
+  .hero h1{font-size:var(--fs-h2)}
+  .chip{margin-bottom:var(--s1)}
+  .hphoto{aspect-ratio:16/9}
+}
+/* narrow tablets: form and build share the row equally, so the build is never a thin strip */
+@media (min-width:721px) and (max-width:900px){
+  .hstage{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:1080px){
+  .pic{aspect-ratio:16/9}
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width:720px){
+  :root{--pad:var(--s4);--fs-title:18px;--bar:calc(76px + env(safe-area-inset-bottom))}
+  /* the call bar is pinned for the whole page: the page ends above it and anchors stop above it */
+  html{scroll-padding-top:72px;scroll-padding-bottom:var(--bar)}
+  body{padding-bottom:var(--bar)}
+  .top .wrap{height:60px}
+  .top .logo img{width:132px}
+  .top .phone{padding:var(--s3)}
+  .top-cta{display:none}
+  /* phones: the words, the form, then the photo card with the build strip under it. The wrappers step aside
+     (display:contents) so each piece takes its own row. */
+  .hgrid{grid-template-columns:minmax(0,1fr);padding:var(--s2) var(--pad) var(--s7)}
+  .htext,.hstage{display:contents}
+  .chip{justify-self:center}
+  .formcard{margin-top:var(--s2);padding:var(--s4);background:var(--card);box-shadow:none}
+  /* the step count sits at the end of the progress bar, not on a row of its own */
+  .f-top{position:relative}
+  .f-count{position:absolute;right:0;top:calc(100% + var(--s1) + 2px);line-height:1;transform:translateY(-50%)}
+  .f-bar{margin-right:56px}
+  .hcard{margin-top:var(--s5)}
+  .hphoto{position:relative;inset:auto;aspect-ratio:16/9;border-radius:var(--r-lg);overflow:hidden}
+  .hphoto img{position:absolute;inset:0}
+  .hphoto figcaption{left:var(--s3);bottom:var(--s3)}
+  .fields{grid-template-columns:1fr}
+  .h-pause{bottom:var(--s3);right:var(--s3)}
+  .proc li{font-size:var(--fs-sm)}
+  .sh-top,.sh-body,.sh-foot{padding-inline:var(--s4)}
+  .sh-body{grid-template-columns:1fr;gap:0}
+  .sh-sec h3{min-height:0}
+  .sh-foot .btn{width:100%}
+  .calc{grid-template-columns:minmax(0,1fr)}
+  .r-top{grid-template-columns:104px minmax(0,1fr);gap:var(--s4)}
+  .nums{gap:var(--s4)}
+  .offices{grid-template-columns:minmax(0,1fr)}
+  /* phones: each mistake sits over its fix, a short line between them */
+  .fx{gap:var(--s5)}
+  .fx li{grid-template-columns:minmax(0,1fr);gap:var(--s1)}
+  .fx-ln{justify-self:center;width:2px;height:var(--s4);transform-origin:50% 0}
+  .fx-ln::after{content:none}
+  .tl-n{font-size:var(--fs-sm)}
+  .tl-n .nw{white-space:normal}   /* four narrow columns: the first label takes two lines, it never runs into the next */
+  /* phones: the four steps run down the page, numbers on the left */
+  .nx{grid-template-columns:auto;justify-content:center;gap:var(--s4)}
+  .nx li{grid-template-columns:32px auto;justify-items:start;align-items:center;gap:var(--s3);padding:0;text-align:left}
+  .nx li:not(:last-child)::after{left:15px;top:32px;width:2px;height:calc(100% - 32px + var(--s4));transform-origin:50% 0}
+  .pic{aspect-ratio:4/3}
+  /* phones: the pinned bar's booking button is the P.S. button (one booking button per screen) */
+  .ps .btn,.ps .proof{display:none}
+  .pj-card{flex-basis:var(--cw,80%)}
+  .r-shopw{width:104px}
+  .pj-card figcaption{display:grid;grid-template-rows:auto auto 1fr;gap:var(--s1);min-height:96px;align-content:start}
+  .pj-card figcaption .pj-scope{grid-row:3;align-self:end}
+  .pj-scope{justify-self:start;margin-top:var(--s1)}
+  .of-map{padding:4% 7% 6%}   /* room for Alberta's east edge: the whole map stays on the screen */
+  .pin[data-pin="1"]{margin-left:-8px}
+  .pin[data-pin="2"]{--h:12px!important}   /* Calgary's head sat on Edmonton's stem at phone width */
+  .faq-g{padding-top:var(--s7)}
+  .final .acts .btn{width:100%}
+  .foot .wrap{gap:0 var(--s4)}
+  .stick{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;gap:var(--s2);padding:var(--s3) var(--s4) calc(var(--s3) + env(safe-area-inset-bottom));
+    background:var(--bg);border-top:1px solid var(--line)}
+  .stick .btn{flex:1;padding:0 var(--s3)}
+  .stick .call{flex:none;gap:var(--s2);padding:0 var(--s4)}
+  /* one booking button per screen: on the contact step the form's own submit is the only one, and the bar's is
+     hidden (app.js) while an in-page booking button is on screen. Call always stays and takes the bar. */
+  body:has(#lead .step:last-of-type:not([hidden])) .stick > .btn[data-goform]{display:none}
+  body:has(#lead .step:last-of-type:not([hidden])) .stick .call,.stick:has(> .btn[hidden]) .call{flex:1}
+}
+/* short phones (under 760px tall): tighter rows, so the offer line, the question and all 8 answers stay above the bar */
+@media (max-width:720px) and (max-height:760px){
+  .hgrid{padding-top:0}
+  .chip{margin-bottom:var(--s1)}
+  .callout{margin-bottom:0}
+  .offer{font-size:var(--fs-sm)}
+  .formcard{margin-top:var(--s1);padding-top:var(--s3)}
+  .f-bar{margin:var(--s1) 56px var(--s2) 0}
+  .step legend{margin-bottom:var(--s2)}
+  .opts{gap:var(--s1)}
+  .opt{min-height:var(--h-min)}
+}
+
+/* The display face draws decorative joins (c-t in "project") when ligatures are on. Kept here, after every `font:`
+   shorthand, because the shorthand resets font-variant-ligatures to normal. */
+h1,h2,.co-t b{font-variant-ligatures:none}
+
+/* Drawn blocks, motion on: marks and lines draw, the found-items move to the first stop, the steps fill in order. */
+@media (prefers-reduced-motion:no-preference){
+  :is(.pre,.in) .fx-no svg{animation:drawMark .35s var(--xo) calc(var(--i) * .35s) both}
+  :is(.pre,.in) .fx-ln{animation:joinFix .4s var(--xo) calc(var(--i) * .35s + .2s) both}
+  :is(.pre,.in) .fx-yes svg{animation:drawMark .35s var(--xo) calc(var(--i) * .35s + .5s) both}
+  :is(.pre,.in) .tl-bar{animation:drawLine 1s var(--xo) both}
+  :is(.pre,.in) .tl-dots:not(.tl-gone){animation:moveFound 1s cubic-bezier(.65,0,.35,1) .3s both}
+  :is(.pre,.in) .tl-dots svg{animation:drawMark .35s var(--xo) 1.3s both}
+  :is(.pre,.in) .nf-x span{animation:drawStrike .5s var(--xo) .1s both}
+  :is(.pre,.in) .nf-x + .nf-x span{animation-delay:.4s}
+  :is(.pre,.in) .nf-ok svg{animation:drawMark .35s var(--xo) .9s both}
+  .nx:is(.pre,.in) li::before{animation:fillStep .3s var(--xo) calc(var(--i) * .4s) both}
+  .nx:is(.pre,.in) li::after{animation:drawLine .4s var(--xo) calc(var(--i) * .4s + .15s) both}
+  :is(.pre,.in) .ps-u{animation:drawUnder .7s var(--xo) .2s both}
+  .pre *,.pre *::before,.pre *::after,.nx.pre li::before,.nx.pre li::after{animation-play-state:paused}
+}
+/* marks wipe in left to right. They used to draw with a stroke dash, which iPhone Safari left blank on some marks. */
+@keyframes drawMark{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
+@keyframes drawLine{from{transform:scale(0)}}
+@keyframes joinFix{from{transform:scale(0)}}
+@keyframes moveFound{from{transform:translateX(200%)}}
+@keyframes drawStrike{from{background-size:0 2px}}
+@keyframes drawUnder{from{background-size:0 3px}}
+@keyframes fillStep{from{background-color:var(--ink-3);color:var(--on-dark)}}
+
+/* Reduced motion: no transitions or animations anywhere; motion.js and hero3d.js do not run their scenes. */
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
